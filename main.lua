@@ -1,13 +1,27 @@
-function love.load()
+function love.load()  
+  -- Cells
   gridXCount = 32
   gridYcount = 24
   cellSize = 32
+  -- Score
+  score = 0
+  scoreX = cellSize * 1
+  scoreY = cellSize * 1
+  -- Lives
+  lives = 3
+  livesX = gridXCount * cellSize - (cellSize * 7)
+  livesY = cellSize * 1
   timerSpeed = 0.12
   foodPosition = {
     x = love.math.random(1, gridXCount),
     y = love.math.random(1, gridYCount),
   }
   reset()
+  -- Fonts
+  font = love.graphics.newFont("fonts/PressStart2P.ttf", 24)
+  -- UI
+  uiColor = { 1, 1, 1, 1 }
+  -- Keymap
   keyMap = {
     escape = function() love.event.quit(0) end,
     left = function() 
@@ -102,6 +116,7 @@ function love.update(delta)
 end
 
 function love.draw() 
+  love.graphics.setFont(font)  
   love.graphics.setColor(.28, .28, .28)
   love.graphics.rectangle(
       'fill',
@@ -122,6 +137,10 @@ function love.draw()
   
   love.graphics.setColor(1, .3, .3)
   drawCell(foodPosition.x, foodPosition.y)
+  love.graphics.setColor(uiColor)
+  love.graphics.line(0, cellSize * 3, gridXCount * cellSize, cellSize * 3)
+  love.graphics.printf("Puntuación: " .. score, scoreX, scoreY, cellSize * (gridXCount / 2))
+  love.graphics.printf("Vidas: " .. lives, livesX, livesY, cellSize * (gridXCount / 2))
 end
 
 function love.keypressed(key)
@@ -162,9 +181,9 @@ end
 
 function reset()
   snakeSegments = {
-    {x = 3, y = 1},
-    {x = 2, y = 1},
-    {x = 1, y = 1},
+    {x = 3, y = 4},
+    {x = 2, y = 4},
+    {x = 1, y = 4},
   }
   directionQueue = {'right'}
   snakeAlive = true
